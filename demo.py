@@ -79,7 +79,7 @@ def draw_key():
 
 def load_images():
     images = []
-    for i in range(1, 70):
+    for i in range(1, 30):
         print("Loading {}...".format(i))
         images.append(pygame.image.load("{}/scaled-maps/{}.png".format(BASE_PATH, i)))
 
@@ -145,6 +145,28 @@ Originalpreis: 2400€
         y += 20
 
     SCREEN.blit(SOFA, (1440-400+5, 450-240+40))
+
+def draw_add_item_button():
+    p = pygame.mouse.get_pos()
+
+    if p[0] > 1440 - 400 and p[0] < 1440 - 400 + 200 and p[1] > 20 and p[1] < 20 + 50:
+        bcolor = (240, 240, 170)
+    else:
+        bcolor = (180, 180, 180)
+
+    pygame.draw.rect(SCREEN, bcolor, (1440 - 400, 20, 200, 50))
+    pygame.draw.rect(SCREEN, (0, 0, 0), (1440 - 400, 20, 200, 50), 2)
+
+    font = pygame.font.Font(pygame.font.get_default_font(), 16)
+
+    surface = font.render("Add Listing", True, (0, 0, 0))
+
+    SCREEN.blit(surface, (1440 - 400 + 100 - surface.get_width() / 2, 20 + 25 - surface.get_height() / 2))
+
+def check_add_item_click():
+    p = pygame.mouse.get_pos()
+    if p[0] > 1440 - 400 and p[0] < 1440 - 400 + 200 and p[1] > 20 and p[1] < 20 + 50:
+        os.system("python3 add_listing.py")
 
 
 pygame.init()
@@ -258,12 +280,17 @@ while not done:
 
                 map_pos = adjust_pos(SCREEN_DIMS, old_dims, scaled_dims, mouse_pos)
 
+            elif event.button == 1:
+                print("yo")
+                check_add_item_click()
+
 
     SCREEN.fill((200, 200, 200))
 
     display_map(scaled_image, map_pos)
     draw_locations(scaled_dims, map_pos, interesting_locations)
     draw_key()
+    draw_add_item_button()
 
     if detail:
         display_detail()
